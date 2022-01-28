@@ -5,15 +5,7 @@
         android:pivotX="50%"
         android:fromDegrees="0"
         android:toDegrees="360"
-        android:duration="10000"
-        android:repeatCount="infinite"/>
-
-    <translate
-        android:fromXDelta="0%p"
-        android:toXDelta="83%p"
-        android:fromYDelta="0"
-        android:toYDelta="64%p"
-        android:duration="3000"
+        android:duration="5000"
         android:repeatCount="infinite"/>
 
 </set>

@@ -12,12 +12,12 @@ import android.widget.TextView;
 public class SpinnerAdapter extends BaseAdapter {
 
     private Context context;
-    private int[] colorImages;
+    private Integer[] colorImages;
     private String[] colorNames;
     private ImageView colorImage;
     private TextView colorText;
 
-    public SpinnerAdapter(Context context,int[] colorImages,String[] colorNames) {
+    public SpinnerAdapter(Context context,Integer[] colorImages,String[] colorNames) {
         this.context = context;
         this.colorImages = colorImages;
         this.colorNames = colorNames;
@@ -44,6 +44,7 @@ public class SpinnerAdapter extends BaseAdapter {
         colorImage = view.findViewById(R.id.colorImageSpinner);
         colorText = view.findViewById(R.id.colorTextSpinner);
         colorImage.setImageResource(colorImages[i]);
+
         colorText.setText(colorNames[i]);
         return view;
     }
