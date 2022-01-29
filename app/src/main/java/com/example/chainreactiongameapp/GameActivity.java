@@ -57,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
                 }else {
                     move(xPos, yPos, player_name);
                 }
+                pos_me++;
                 adapter.setGame_array(game_array,position);
             }
         });
@@ -64,42 +65,50 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    /*
+        chain_break(9,7,red)
+                |-> chain_break(8,7,red)
+
+     */
+
+
     public boolean chain_break(int i,int j,String name) {
-        if (game_max_values[i][j]==1 && game_array[i][j].contains("one") || game_max_values[i][j]==2 &&
-                game_array[i][j].contains("two") || game_max_values[i][j]==3 &&
-                game_array[i][j].contains("three")) {
+        if ((game_max_values[i][j]==1 && game_array[i][j].contains("one")) || (game_max_values[i][j]==2 &&
+                game_array[i][j].contains("two")) || (game_max_values[i][j]==3 &&
+                game_array[i][j].contains("three"))) {
             if (i-1>=0) {
                 set_condition(i-1,j,name);
                 move(i - 1, j, name);
+//                chain_break(i-1,j,name);
             }
             if (j-1>=0) {
                 set_condition(i,j-1,name);
                 move(i, j - 1, name);
+//                chain_break(i,j-1,name);
             }
             if (i+1<game_array.length) {
                 set_condition(i+1,j,name);
                 move(i+1,j,name);
+//                chain_break(i+1,j,name);
             }
             if (j+1<game_array[0].length) {
                 set_condition(i,j+1,name);
                 move(i,j+1,name);
+//                chain_break(i,j+1,name);
             }
-            pos_me--;
             return true;
+        }else {
+            return false;
         }
-        return false;
     }
 
     public void move(int xPos,int yPos,String player_name) {
         if (game_array[xPos][yPos].equals("Player") && game_max_values[xPos][yPos]>=1){
             game_array[xPos][yPos] = "one" + player_name;
-            pos_me++;
         } else if (game_array[xPos][yPos].contains("one") && game_array[xPos][yPos].contains(player_name) && game_max_values[xPos][yPos]>=2) {
             game_array[xPos][yPos] = "two" + player_name;
-            pos_me++;
         }else if (game_array[xPos][yPos].contains("two") && game_array[xPos][yPos].contains(player_name) && game_max_values[xPos][yPos]>=3) {
             game_array[xPos][yPos] = "three" + player_name;
-            pos_me++;
         }
     }
 
