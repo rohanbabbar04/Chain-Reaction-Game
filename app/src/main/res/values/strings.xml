@@ -2,4 +2,11 @@
     <string name="app_name">Chain Reaction Game App</string>
     <string name="chain_reaction_text">CHAIN\n\t\t\t\t\t\t\tREACTION</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ruleOne">The gameplay takes place in an m times n (m×n) board. The most commonly used size of the board is 9 times 6 (9×6).</string>
+    <string name="ruleTwo">For each cell in the board, we define a critical mass. The critical mass is equal to the number of orthogonally adjacent cells. That would be 4 for usual cells, 3 for cells in the edge and 2 for cells in the corner.</string>
+    <string name="ruleThree">All cells are initially empty. The Red and the Green player take turns to place "orbs" of their corresponding colors. The Red player can only place an (red) orb in an empty cell or a cell which already contains one or more red orbs. When two or more orbs are placed in the same cell, they stack up.</string>
+    <string name="ruleFour">When a cell is loaded with a number of orbs equal to its critical mass, the stack immediately explodes. As a result of the explosion, to each of the orthogonally adjacent cells, an orb is added and the initial cell looses as many orbs as its critical mass. The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.</string>
+    <string name="ruleFive">When a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow. The same rule is applicable for other colors.</string>
+    <string name="ruleSix">The winner is the one who eliminates every other player\'s orbs.</string>
+
 </resources>
