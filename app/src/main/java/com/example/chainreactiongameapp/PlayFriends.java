@@ -27,6 +27,7 @@ public class PlayFriends extends AppCompatActivity {
     private PlayersRecyclerViewAdapter adapter;
     private Integer[] colorsImages = new Integer[]{R.color.black,R.color.blue,R.color.red,R.color.yellow};
     private Button playButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

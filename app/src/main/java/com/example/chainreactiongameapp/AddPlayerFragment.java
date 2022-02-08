@@ -1,6 +1,7 @@
 package com.example.chainreactiongameapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ public class AddPlayerFragment extends DialogFragment {
         editTextName = view.findViewById(R.id.EnterNameEditText);
         colorChooseSpinner = view.findViewById(R.id.spinner);
         saveButton = view.findViewById(R.id.saveButton);
+
         Bundle bundle = getArguments();
         assert bundle != null;
         String updateName = bundle.getString("updateName");
