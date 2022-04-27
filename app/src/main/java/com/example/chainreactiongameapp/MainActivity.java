@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         playComputer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,PlayComputer.class);
+                Intent intent = new Intent(MainActivity.this,AIGameActivity.class);
                 startActivity(intent);
             }
         });

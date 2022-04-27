@@ -1,5 +1,6 @@
 package com.example.chainreactiongameapp;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -32,17 +33,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
+public class AIGameAdapter extends RecyclerView.Adapter<AIGameAdapter.GameHolder> {
 
     private Context context;
     private String[][] game_array;
     private int[][] max_game_values;
-    private final ArrayList<Player> players = PlayFriends.getPlayers();
     private onItemClickListener listener;
     private int pos = -1;
     private static ReentrantLock lock = new ReentrantLock(true);
+    private int move_counter = 0;
 
-    public GameAdapter(Context context, String[][] game_array, int[][] max_game_values) {
+    public AIGameAdapter(Context context, String[][] game_array, int[][] max_game_values) {
         this.context = context;
         this.game_array = game_array;
         this.max_game_values = max_game_values;
@@ -62,10 +63,17 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             holder.imageView.setImageResource(R.color.black);
             holder.imageView.setColorFilter(context.getResources().getColor(R.color.black));
         }
-        for (Player player : players) {
-            if (game_array[position / 8][position % 8].contains(player.getName())) {
-                holder.imageView.setColorFilter(context.getResources().getColor(player.getColorID()));
+        if (game_array[position / 8][position % 8].contains("Player-1")) {
+            holder.imageView.setColorFilter(context.getResources().getColor(R.color.red));
+            if (game_array[position / 8][position % 8].contains("one")) {
+                holder.imageView.setImageResource(R.drawable.ic_one_circle_red);
+            } else if (game_array[position / 8][position % 8].contains("two")) {
+                holder.imageView.setImageResource(R.drawable.ic_two_circles_red);
+            } else if (game_array[position / 8][position % 8].contains("three")) {
+                holder.imageView.setImageResource(R.drawable.ic_three_circles_red);
             }
+        }else if (game_array[position / 8][position % 8].contains("AI")) {
+            holder.imageView.setColorFilter(context.getResources().getColor(R.color.blue));
             if (game_array[position / 8][position % 8].contains("one")) {
                 holder.imageView.setImageResource(R.drawable.ic_one_circle_red);
             } else if (game_array[position / 8][position % 8].contains("two")) {
@@ -118,3 +126,4 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
     }
 
 }
+

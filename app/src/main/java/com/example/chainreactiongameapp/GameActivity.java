@@ -1,10 +1,15 @@
 package com.example.chainreactiongameapp;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +18,9 @@ import com.example.chainreactiongameapp.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -22,6 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private final int[][] game_max_values = new int[10][8];
     private final ArrayList<Player> players = PlayFriends.getPlayers();
     private int pos_me;
+    private int turn;
+    private HashMap<String, Integer> map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
 
         adapter = new GameAdapter(GameActivity.this,game_array,game_max_values);
         adapter.setOnItemClickListener(new GameAdapter.onItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClickListener(int position) {
                 if (pos_me>=players.size()) {
@@ -52,13 +63,16 @@ public class GameActivity extends AppCompatActivity {
                 int xPos = position/8;
                 int yPos = position%8;
                 String player_name = players.get(pos_me).getName();
+
                 if (chain_break(xPos,yPos,player_name)) {
                     game_array[xPos][yPos] = "Player";
                 }else {
                     move(xPos, yPos, player_name);
                 }
                 pos_me++;
+                turn++;
                 adapter.setGame_array(game_array,position);
+                check_game();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -68,7 +82,6 @@ public class GameActivity extends AppCompatActivity {
     /*
         chain_break(9,7,red)
                 |-> chain_break(8,7,red)
-
      */
 
 
@@ -77,24 +90,24 @@ public class GameActivity extends AppCompatActivity {
                 game_array[i][j].contains("two")) || (game_max_values[i][j]==3 &&
                 game_array[i][j].contains("three"))) {
             if (i-1>=0) {
+                chain_break(i-1,j,name);
                 set_condition(i-1,j,name);
                 move(i - 1, j, name);
-//                chain_break(i-1,j,name);
             }
             if (j-1>=0) {
+                chain_break(i,j-1,name);
                 set_condition(i,j-1,name);
                 move(i, j - 1, name);
-//                chain_break(i,j-1,name);
             }
             if (i+1<game_array.length) {
+                chain_break(i+1,j,name);
                 set_condition(i+1,j,name);
                 move(i+1,j,name);
-//                chain_break(i+1,j,name);
             }
             if (j+1<game_array[0].length) {
+                chain_break(i,j+1,name);
                 set_condition(i,j+1,name);
                 move(i,j+1,name);
-//                chain_break(i,j+1,name);
             }
             return true;
         }else {
@@ -120,5 +133,65 @@ public class GameActivity extends AppCompatActivity {
         }else if (game_array[i][j].contains("three") && !game_array[i][j].contains(name)) {
             game_array[i][j] = game_array[i][j].substring(0,6) + name;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void check_game() {
+        map = new LinkedHashMap<>();
+        for (int i=0;i<players.size();i++) {
+            map.put(players.get(i).getName(),0);
+        }
+
+        for(Player player : players) {
+            for (int i=0;i<game_array.length;i++) {
+                for (int j=0;j<game_array[i].length;j++) {
+                    if (game_array[i][j].contains(player.getName())) {
+                        Integer value = map.get(player.getName());
+                        value+=1;
+                        map.replace(player.getName(),value);
+                    }
+                }
+            }
+        }
+        Log.d("message", map.toString());
+        if (turn>2) {
+            for (Player player : players) {
+                if(map.get(player.getName())==0) {
+                    game_ends();
+                }
+            }
+        }
+
+
+    }
+
+    public void game_ends() {
+        String winner = null;
+        for (Player player : players) {
+            if(map.get(player.getName())!=0) {
+                winner = player.getName();
+                break;
+            }
+        }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(GameActivity.this);
+        dialog.setTitle("Game Over");
+        dialog.setMessage(winner + " has won");
+        dialog.create();
+        dialog.setPositiveButton("Play Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                Intent intent = new Intent(GameActivity.this, PlayFriends.class);
+                startActivity(intent);
+            }
+        });
+        dialog.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        }).show();
     }
 }
