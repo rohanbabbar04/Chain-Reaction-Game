@@ -65,16 +65,19 @@ public class GameActivity extends AppCompatActivity {
                 String player_name = players.get(pos_me).getName();
                 if (game_array[xPos][yPos].equals("Player")) {
                     pos_me++;
+                    if (chain_break(xPos,yPos,player_name)) {
+                        game_array[xPos][yPos] = "Player";
+                    }else {
+                        move(xPos, yPos, player_name);
+                    }
                 } else if (game_array[xPos][yPos].contains(player_name)) {
                     pos_me++;
+                    if (chain_break(xPos,yPos,player_name)) {
+                        game_array[xPos][yPos] = "Player";
+                    }else {
+                        move(xPos, yPos, player_name);
+                    }
                 }
-
-                if (chain_break(xPos,yPos,player_name)) {
-                    game_array[xPos][yPos] = "Player";
-                }else {
-                    move(xPos, yPos, player_name);
-                }
-
                 turn++;
                 adapter.setGame_array(game_array,position);
                 check_game();

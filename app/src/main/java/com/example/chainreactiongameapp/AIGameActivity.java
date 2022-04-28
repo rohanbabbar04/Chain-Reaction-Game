@@ -41,18 +41,18 @@ public class AIGameActivity extends AppCompatActivity {
                 }else {
                     move(xPos, yPos, "Player-1");
                 }
-//                move(xPos,yPos,"Player-1");
-//                set_condition(xPos,yPos,"Player-1");
-                while (true) {
-                    int aiXPos = (int) (Math.random() * 8);
-                    int aiYPos = (int) (Math.random() * 8);
-                    if (game_array[aiXPos][aiYPos].contains("AI") || game_array[aiXPos][aiYPos].contains("Player")) {
-                        if (chain_break(aiXPos,aiYPos,"AI")) {
-                            game_array[aiXPos][aiYPos] = "Player";
-                        }else {
-                            move(aiXPos, aiYPos, "AI");
+                if(game_array[xPos][yPos].equals("Player") || game_array[xPos][yPos].contains("Player-1")) {
+                    while (true) {
+                        int aiXPos = (int) (Math.random() * 8);
+                        int aiYPos = (int) (Math.random() * 8);
+                        if (game_array[aiXPos][aiYPos].contains("AI") || game_array[aiXPos][aiYPos].contains("Player")) {
+                            if (chain_break(aiXPos, aiYPos, "AI")) {
+                                game_array[aiXPos][aiYPos] = "Player";
+                            } else {
+                                move(aiXPos, aiYPos, "AI");
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
                 aiGameAdapter.setGame_array(game_array,position);
